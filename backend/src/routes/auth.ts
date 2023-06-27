@@ -73,7 +73,7 @@ export async function authRoutes(app: FastifyInstance) {
         // Create a JWT
         const token = app.jwt.sign({
             name: user.name,
-            userUrl: user.avatarUrl,
+            avatarUrl: user.avatarUrl,
         }, {
             sub: user.id,
             expiresIn: '30 days',
