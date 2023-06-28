@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useRouter } from 'expo-router'
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
@@ -13,12 +14,12 @@ import {
 } from '@expo-google-fonts/roboto'
 
 // IMAGES
-import blurBg from './src/assets/bg-blur.png'
-import Logo from './src/assets/spacetime-logo.svg'
-import Stripes from './src/assets/stripes.svg'
+import blurBg from '../src/assets/bg-blur.png'
+import Logo from '../src/assets/spacetime-logo.svg'
+import Stripes from '../src/assets/stripes.svg'
 
 // UTILS
-import { api } from './src/lib/api'
+import { api } from '../src/lib/api'
 
 // STYLES
 import { styled } from 'nativewind'
@@ -34,6 +35,8 @@ const discovery = {
 
 // APP
 export default function App() {
+  const router = useRouter()
+
   const [request, response, signInWithGithub] = useAuthRequest(
     {
       clientId: '83afc4d76a4936e75dc6',
@@ -51,18 +54,25 @@ export default function App() {
     Roboto_700Bold,
   })
 
+  async function handleGithubOAuthCode(code: string) {
+    try {
+      const response = await api.post('/register', { code })
+
+      const { token } = response.data
+
+      await SecureStore.setItemAsync('_spacetime_token', token)
+
+      router.push('/memories')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     if (response?.type === 'success') {
       const { code } = response.params
 
-      api.post('/register', { code })
-      .then((response) => {
-        const { token } = response.data
-        SecureStore.setItemAsync('_spacetime_token', token)
-      })
-      .catch(err => {
-        console.error(err)
-      })
+      handleGithubOAuthCode(code)
     }
   }, [response])
 

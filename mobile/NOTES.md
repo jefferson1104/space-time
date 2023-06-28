@@ -18,9 +18,16 @@ $ npm i eslint @rocketseat/eslint-config -D
 # install prettier plugin tailwindcss
 $ npm i prettier-plugin-tailwindcss -D
 
+
+# run project
+$ npx expo start
+
+# run project cleaning cache
+$ npx expo start --clear
+
 ```
 
-#### NOTE:
+#### NOTES:
 change baseURL to your local IP address.
 
 File:
