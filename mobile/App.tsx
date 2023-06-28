@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
+import * as SecureStore from 'expo-secure-store';
 
 // FONTS
 import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
@@ -54,10 +55,13 @@ export default function App() {
     if (response?.type === 'success') {
       const { code } = response.params
 
-      api.post('/register', { code }).then((response) => {
+      api.post('/register', { code })
+      .then((response) => {
         const { token } = response.data
-
-        console.log('TOKEN ==>', token)
+        SecureStore.setItemAsync('_spacetime_token', token)
+      })
+      .catch(err => {
+        console.error(err)
       })
     }
   }, [response])
