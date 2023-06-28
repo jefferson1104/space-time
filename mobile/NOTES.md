@@ -19,3 +19,9 @@ $ npm i eslint @rocketseat/eslint-config -D
 $ npm i prettier-plugin-tailwindcss -D
 
 ```
+
+#### NOTE:
+change baseURL to your local IP address.
+
+File:
+`./src/lib/api.ts`
