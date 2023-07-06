@@ -1,31 +1,16 @@
 import { useEffect } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { useRouter } from 'expo-router'
-import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
-import { StatusBar } from 'expo-status-bar'
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
-import * as SecureStore from 'expo-secure-store';
-
-// FONTS
-import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
-import {
-  useFonts,
-  Roboto_400Regular,
-  Roboto_700Bold,
-} from '@expo-google-fonts/roboto'
+import * as SecureStore from 'expo-secure-store'
 
 // IMAGES
-import blurBg from '../src/assets/bg-blur.png'
 import Logo from '../src/assets/spacetime-logo.svg'
-import Stripes from '../src/assets/stripes.svg'
 
 // UTILS
 import { api } from '../src/lib/api'
 
-// STYLES
-import { styled } from 'nativewind'
-
 // APP UTILS
-const StyledStripes = styled(Stripes)
 const discovery = {
   authorizationEndpoint: 'https://github.com/login/oauth/authorize',
   tokenEndpoint: 'https://github.com/login/oauth/access_token',
@@ -37,7 +22,7 @@ const discovery = {
 export default function App() {
   const router = useRouter()
 
-  const [request, response, signInWithGithub] = useAuthRequest(
+  const [, response, signInWithGithub] = useAuthRequest(
     {
       clientId: '83afc4d76a4936e75dc6',
       scopes: ['identity'],
@@ -47,12 +32,6 @@ export default function App() {
     },
     discovery,
   )
-
-  const [hasLoadedFonts] = useFonts({
-    BaiJamjuree_700Bold,
-    Roboto_400Regular,
-    Roboto_700Bold,
-  })
 
   async function handleGithubOAuthCode(code: string) {
     try {
@@ -76,18 +55,8 @@ export default function App() {
     }
   }, [response])
 
-  if (!hasLoadedFonts) {
-    return null
-  }
-
   return (
-    <ImageBackground
-      source={blurBg}
-      className="relative flex-1 items-center bg-gray-900 px-8 py-10"
-      imageStyle={{ position: 'absolute', left: '-100%' }}
-    >
-      <StyledStripes className="absolute left-2" />
-
+    <View className="flex-1 items-center px-8 py-10">
       <View className="flex-1 items-center justify-center gap-6">
         <Logo />
 
@@ -115,8 +84,6 @@ export default function App() {
       <Text className="text-center font-body text-sm leading-relaxed text-gray-200">
         Feito com 💜 por Soares Dev LTDA.
       </Text>
-
-      <StatusBar style="light" translucent />
-    </ImageBackground>
+    </View>
   )
 }
