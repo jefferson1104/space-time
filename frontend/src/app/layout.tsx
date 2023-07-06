@@ -1,3 +1,4 @@
+import './globals.css'
 import { ReactNode } from 'react'
 import { cookies } from 'next/headers'
 import {
@@ -10,9 +11,6 @@ import { Copyright } from '@/components/Copyright'
 import { Hero } from '@/components/Hero'
 import { Profile } from '@/components/Profile'
 import { SignIn } from '@/components/SignIn'
-
-// STYLES
-import './globals.css'
 
 // LAYOUT UTILS
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
