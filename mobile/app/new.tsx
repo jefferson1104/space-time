@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { Image, ScrollView, Switch, Text, TextInput, View } from 'react-native'
+import {
+  Image,
+  ScrollView,
+  Switch,
+  Text,
+  TextInput,
+  View,
+  ActivityIndicator,
+} from 'react-native'
 import { Link, useRouter } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -17,6 +25,7 @@ import { api } from '../src/lib/api'
 
 // NEW MEMORY
 export default function NewMemory() {
+  const [isLoading, setIsLoading] = useState(false)
   const [isPublic, setIsPublic] = useState(false)
   const [content, setContent] = useState('')
   const [preview, setPreview] = useState<string | null>(null)
@@ -43,6 +52,7 @@ export default function NewMemory() {
   }
 
   async function handleCreateMemory() {
+    setIsLoading(true)
     const token = await SecureStore.getItemAsync('_spacetime_token')
 
     let coverUrl = ''
@@ -79,6 +89,7 @@ export default function NewMemory() {
       },
     )
 
+    setIsLoading(false)
     router.push('/memories')
   }
 
@@ -142,10 +153,16 @@ export default function NewMemory() {
 
         <TouchableOpacity
           activeOpacity={0.7}
+          disabled={isLoading}
           onPress={handleCreateMemory}
-          className="items-center self-end rounded-full bg-green-500 px-5 py-2"
+          className={`flex-row items-center justify-center self-end rounded-full ${
+            isLoading ? 'bg-gray-200' : 'bg-green-500'
+          } px-5 py-2`}
         >
-          <Text className="font-alt text-sm uppercase text-black">Salvar</Text>
+          <Text className="px-2 font-alt text-sm uppercase text-black">
+            {isLoading ? 'Salvando...' : 'Salvar'}
+          </Text>
+          {isLoading && <ActivityIndicator size="small" color="#000" />}
         </TouchableOpacity>
       </View>
     </ScrollView>
