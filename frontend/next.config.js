@@ -2,7 +2,10 @@
 const nextConfig = {
     images: {
         domains: [
-            'avatars.githubusercontent.com', 'localhost'
+            'avatars.githubusercontent.com',
+            'images.unsplash.com',
+            'localhost',
+            '192.168.1.69'
         ]
     },
 }
