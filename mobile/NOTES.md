@@ -18,7 +18,6 @@ $ npm i eslint @rocketseat/eslint-config -D
 # install prettier plugin tailwindcss
 $ npm i prettier-plugin-tailwindcss -D
 
-
 # run project
 $ npx expo start
 
